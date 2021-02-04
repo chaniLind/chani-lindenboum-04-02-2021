@@ -26,13 +26,13 @@ export class WeatherByCityComponent implements OnInit {
   constructor(private myServer: ServerService, private myIpService: IpServiceService) { }
 
   ngOnInit(): void {
-    this.myIpService.getIPAddress().subscribe((res:any)=>{
-      debugger;  
-      this.ipAddress=res.ip; 
-      this.myServer.getSLocationByIpAdrres(this.ipAddress).subscribe((Response: any) => {
+    this.myIpService.getIPAddress().subscribe((res: any) => {
+      debugger;
+      this.ipAddress = res.ip;
+      this.myServer.getLocationByIpAdrres(this.ipAddress).subscribe((Response: any) => {
         this.onSelectValueAT(Response);
-      }) 
-    }); 
+      })
+    });
   }
 
   public onKeyPressAt(): void {
@@ -46,11 +46,13 @@ export class WeatherByCityComponent implements OnInit {
     this.myControl.setValue(city.LocalizedName);
     this.currentCity = city;
     this.getCurrentTemperature(city);
-    this.getTemperatureForTheNext5Days(city, true);
+    this.getTemperatureForTheNext5Days(city, true); // get temperature by Celsius
+    this.getTemperatureForTheNext5Days(city, false); // get temperature by Fahrenheit
   }
 
   public getCurrentTemperature(city: any) {
     this.myServer.getCurrentTemperature(city.Key).subscribe((Response: any) => {
+      debugger;
       this.currentTemperaCelsius = Response[0].Temperature.Metric.Value;
       this.curTemperatureFahrenheit = Response[0].Temperature.Imperial.Value;
       this.currentTemperature = this.currentTemperaCelsius;
@@ -61,14 +63,11 @@ export class WeatherByCityComponent implements OnInit {
     debugger;
     this.myServer.getTemperatureForTheNext5Days(city.Key, metricValue).subscribe((Response: any) => {
       debugger;
-      if (metricValue){
+      if (metricValue)
         this.theNext5DaysCelsius = Response.DailyForecasts;
-        this.theNext5Days = this.theNext5DaysCelsius;
-      }
-      else{
+      else
         this.theNext5DaysFahrenheit = Response.DailyForecasts;
-        this.theNext5Days = this.theNext5DaysFahrenheit;
-      }
+      this.theNext5Days = this.theNext5DaysCelsius;
     })
   }
 
@@ -81,11 +80,7 @@ export class WeatherByCityComponent implements OnInit {
   public getFahrenheit() {
     debugger;
     this.currentTemperature = this.curTemperatureFahrenheit;
-    if (this.theNext5DaysFahrenheit.length == 0)
-      this.getTemperatureForTheNext5Days(this.currentCity, false);
-    else
-      this.theNext5Days = this.theNext5DaysFahrenheit;
-    
+    this.theNext5Days = this.theNext5DaysFahrenheit;
   }
 
 }
