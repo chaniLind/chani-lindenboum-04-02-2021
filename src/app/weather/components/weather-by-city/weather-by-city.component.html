@@ -1,0 +1,50 @@
+<header>
+    <h2>Weather</h2>
+</header>
+
+<section>
+    <br>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                    <input type="text" placeholder="Search" aria-label="Number" matInput [formControl]="myControl"
+                        [matAutocomplete]="auto" (keyup)=onKeyPressAt()>
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let city of citys" (click)=onSelectValueAT(city) [value]="city">
+                            {{city.LocalizedName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </form>
+        </div>
+        <span class="wob_t" style="display:inline" (click)=getCelsius() aria-label="°Celsius" aria-disabled="true" role="button">°C</span>
+        &nbsp;|&nbsp;
+        <span class="wob_t" style="display:inline" (click)=getFahrenheit() aria-label="°Celsius" aria-disabled="true" role="button">°F</span>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-5"></div>
+        <div class="col-sm-4">
+            <p class="cssCurrentTemerature">Today's temperature : &nbsp; {{currentTemperature}}°</p>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" style="margin-left: 2%">
+            <div class="row">
+                <div class="col-sm-2" *ngFor="let day of theNext5Days">
+                    <div class="css-weather-5-Next-Days">
+                        <br>
+                        <p>{{day.Date | date :'EEEE'}}</p>
+                        <p >&nbsp;{{day.Temperature.Minimum.Value}}°&nbsp;{{day.Temperature.Maximum.Value}}°
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
