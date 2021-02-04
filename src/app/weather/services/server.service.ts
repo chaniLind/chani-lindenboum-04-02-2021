@@ -10,7 +10,7 @@ import { promise } from 'protractor';
 })
 export class ServerService {
 
-  public apiKey: string = 'f2tXqhyrhgRNM9cceTj9LAEGt6Pm4qfE';
+  public apiKey: string = 'Z5lMiPfWkM54djMNcsMYVmw8aLkhVmhN';
   public url: string = "";
 
   // get location by ip adress

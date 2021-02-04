@@ -47,7 +47,6 @@ export class WeatherByCityComponent implements OnInit {
     this.currentCity = city;
     this.getCurrentTemperature(city);
     this.getTemperatureForTheNext5Days(city, true); // get temperature by Celsius
-    this.getTemperatureForTheNext5Days(city, false); // get temperature by Fahrenheit
   }
 
   public getCurrentTemperature(city: any) {
@@ -63,11 +62,14 @@ export class WeatherByCityComponent implements OnInit {
     debugger;
     this.myServer.getTemperatureForTheNext5Days(city.Key, metricValue).subscribe((Response: any) => {
       debugger;
-      if (metricValue)
+      if (metricValue){
         this.theNext5DaysCelsius = Response.DailyForecasts;
-      else
+        this.theNext5Days = Response.DailyForecasts;
+      }
+      else{
         this.theNext5DaysFahrenheit = Response.DailyForecasts;
-      this.theNext5Days = this.theNext5DaysCelsius;
+        this.theNext5Days = Response.DailyForecasts;
+      }
     })
   }
 
@@ -80,7 +82,7 @@ export class WeatherByCityComponent implements OnInit {
   public getFahrenheit() {
     debugger;
     this.currentTemperature = this.curTemperatureFahrenheit;
-    this.theNext5Days = this.theNext5DaysFahrenheit;
+    this.getTemperatureForTheNext5Days(this.currentCity, false); 
   }
 
 }
